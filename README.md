@@ -1,16 +1,22 @@
-# React + Vite
+# Football Fan Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A website for football fans — live scores, Premier League table, and the latest news, all in one place.
 
-Currently, two official plugins are available:
+## Features (Phase 1)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Live scores and fixtures via ESPN's public soccer API (no signup/API key required)
+- Premier League table, same source
+- Latest football news via BBC Sport's RSS feed
 
-## React Compiler
+## Coming later (Phase 2)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Fan community: forum/chat, per-team or per-match discussion rooms
 
-## Expanding the Oxlint configuration
+## Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```
+npm install
+npx vercel dev
+```
+
+Uses Vercel serverless functions (`/api`), so `vercel dev` is needed instead of plain `vite dev` to run the API routes locally.

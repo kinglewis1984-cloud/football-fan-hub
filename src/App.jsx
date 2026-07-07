@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Community from './Community'
 import './App.css'
 
 function stripHtml(html) {
@@ -65,7 +66,7 @@ function StandingsTable({ standings }) {
 
 export default function App() {
   const [news, setNews] = useState({ loading: true, items: [], error: null })
-  const [scores, setScores] = useState({ loading: true, configured: false, matches: [], standings: [] })
+  const [scores, setScores] = useState({ loading: true, matches: [], standings: [] })
 
   useEffect(() => {
     fetch('/api/news')
@@ -76,14 +77,9 @@ export default function App() {
     fetch('/api/scores')
       .then((r) => r.json())
       .then((data) =>
-        setScores({
-          loading: false,
-          configured: data.configured,
-          matches: data.matches || [],
-          standings: data.standings || [],
-        })
+        setScores({ loading: false, matches: data.matches || [], standings: data.standings || [] })
       )
-      .catch(() => setScores({ loading: false, configured: false, matches: [], standings: [] }))
+      .catch(() => setScores({ loading: false, matches: [], standings: [] }))
   }, [])
 
   return (
@@ -97,12 +93,7 @@ export default function App() {
         <section className="panel matches-panel">
           <h2>Premier League Matches</h2>
           {scores.loading && <p className="hint-text">Loading matches…</p>}
-          {!scores.loading && !scores.configured && (
-            <p className="hint-text">
-              Live scores need a free football-data.org API key to be connected — placeholder for now.
-            </p>
-          )}
-          {!scores.loading && scores.configured && scores.matches.length === 0 && (
+          {!scores.loading && scores.matches.length === 0 && (
             <p className="hint-text">No matches found right now.</p>
           )}
           {scores.matches.map((m) => (
@@ -113,10 +104,7 @@ export default function App() {
         <section className="panel table-panel">
           <h2>Premier League Table</h2>
           {scores.loading && <p className="hint-text">Loading table…</p>}
-          {!scores.loading && !scores.configured && (
-            <p className="hint-text">Table will appear once the API key is connected.</p>
-          )}
-          {!scores.loading && scores.configured && scores.standings.length > 0 && (
+          {!scores.loading && scores.standings.length > 0 && (
             <StandingsTable standings={scores.standings} />
           )}
         </section>
@@ -132,6 +120,10 @@ export default function App() {
             </a>
           ))}
         </section>
+
+        {scores.standings.length > 0 && (
+          <Community teams={scores.standings.map((row) => row.team)} />
+        )}
       </main>
     </div>
   )
