@@ -117,6 +117,11 @@ body {
   grid-column: 1 / -1;
 }
 
+.matches-panel {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
 .panel {
   background: #142a1d;
   border: 1px solid #234b32;

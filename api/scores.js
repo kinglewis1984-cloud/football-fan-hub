@@ -1,15 +1,24 @@
 // Uses ESPN's public soccer API — no signup, no API key, no account needed.
 const SCOREBOARD_URL = 'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard'
 const STANDINGS_URL = 'https://site.api.espn.com/apis/v2/sports/soccer/eng.1/standings'
+const WINDOW_DAYS = 60 // how far ahead to look for upcoming fixtures
 
 function statValue(stats, name) {
   return stats.find((s) => s.name === name)?.value ?? 0
 }
 
+function formatDate(date) {
+  return date.toISOString().slice(0, 10).replace(/-/g, '')
+}
+
 export default async function handler(req, res) {
   try {
+    const today = new Date()
+    const future = new Date(today.getTime() + WINDOW_DAYS * 24 * 60 * 60 * 1000)
+    const dates = `${formatDate(today)}-${formatDate(future)}`
+
     const [scoreboardRes, standingsRes] = await Promise.all([
-      fetch(SCOREBOARD_URL),
+      fetch(`${SCOREBOARD_URL}?dates=${dates}`),
       fetch(STANDINGS_URL),
     ])
 
@@ -20,24 +29,28 @@ export default async function handler(req, res) {
     const scoreboardData = await scoreboardRes.json()
     const standingsData = await standingsRes.json()
 
-    const matches = (scoreboardData.events || []).map((event) => {
-      const comp = event.competitions[0]
-      const home = comp.competitors.find((c) => c.homeAway === 'home')
-      const away = comp.competitors.find((c) => c.homeAway === 'away')
-      const state = comp.status.type.state
-      const status = state === 'in' ? 'IN_PLAY' : state === 'post' ? 'FINISHED' : 'SCHEDULED'
+    const matches = (scoreboardData.events || [])
+      .map((event) => {
+        const comp = event.competitions[0]
+        const home = comp.competitors.find((c) => c.homeAway === 'home')
+        const away = comp.competitors.find((c) => c.homeAway === 'away')
+        const state = comp.status.type.state
+        const status = state === 'in' ? 'IN_PLAY' : state === 'post' ? 'FINISHED' : 'SCHEDULED'
 
-      return {
-        id: event.id,
-        status,
-        utcDate: event.date,
-        homeTeam: home?.team.shortDisplayName || home?.team.displayName,
-        awayTeam: away?.team.shortDisplayName || away?.team.displayName,
-        homeScore: home ? Number(home.score) : null,
-        awayScore: away ? Number(away.score) : null,
-        minute: comp.status.displayClock,
-      }
-    })
+        return {
+          id: event.id,
+          status,
+          utcDate: event.date,
+          homeTeam: home?.team.shortDisplayName || home?.team.displayName,
+          awayTeam: away?.team.shortDisplayName || away?.team.displayName,
+          homeScore: home ? Number(home.score) : null,
+          awayScore: away ? Number(away.score) : null,
+          minute: comp.status.displayClock,
+        }
+      })
+      // Drop finished matches — the list only shows what's upcoming or live right now.
+      .filter((m) => m.status !== 'FINISHED')
+      .sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate))
 
     const entries = standingsData.children?.[0]?.standings?.entries || []
     const standings = entries
