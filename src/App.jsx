@@ -140,6 +140,10 @@ export default function App() {
           )}
         </section>
 
+        {scores.standings.length > 0 && (
+          <Community teams={scores.standings.map((row) => row.team)} />
+        )}
+
         <section className="panel news-panel">
           <h2>Latest News</h2>
           {news.loading && <p className="hint-text">Loading news…</p>}
@@ -151,10 +155,6 @@ export default function App() {
             </a>
           ))}
         </section>
-
-        {scores.standings.length > 0 && (
-          <Community teams={scores.standings.map((row) => row.team)} />
-        )}
       </main>
     </div>
   )
