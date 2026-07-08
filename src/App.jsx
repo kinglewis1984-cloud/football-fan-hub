@@ -89,6 +89,37 @@ export default function App() {
         <p className="tagline">Scores, tables, and news — all in one place</p>
       </header>
 
+      <div className="promo-row">
+        <a
+          className="promo-banner"
+          href="https://www.youtube.com/@HnLkicinit/streams"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className="age-badge">18+ ONLY</span>
+          <img src="/hnlkicinit-avatar.jpg" alt="HnLkicinit avatar" />
+          <div>
+            <span className="promo-label">Watch on YouTube</span>
+            <h3>HnLkicinit</h3>
+            <p>Arsenal streams &amp; content — check out the channel</p>
+          </div>
+        </a>
+
+        <a
+          className="promo-banner"
+          href="https://x.com/HnLkicin"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src="/hnlkicinit-avatar.jpg" alt="HnLkicinit avatar" />
+          <div>
+            <span className="promo-label">Follow on X</span>
+            <h3>@HnLkicin</h3>
+            <p>Arsenal takes &amp; updates — give it a follow</p>
+          </div>
+        </a>
+      </div>
+
       <main className="layout">
         <section className="panel matches-panel">
           <h2>Premier League Matches</h2>
