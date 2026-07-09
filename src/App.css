@@ -16,8 +16,16 @@ body {
 .site-header {
   background: linear-gradient(135deg, #0b3d24, #145c37);
   padding: 28px 20px;
-  text-align: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.site-header-main {
+  text-align: left;
 }
 
 .site-header h1 {
@@ -31,6 +39,32 @@ body {
   margin: 6px 0 0;
   color: #b7e0c6;
   font-size: 14px;
+}
+
+.mission {
+  margin: 0;
+  max-width: 380px;
+  text-align: right;
+  color: #cfe8da;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .site-header-main {
+    text-align: center;
+  }
+
+  .mission {
+    text-align: center;
+    max-width: none;
+  }
 }
 
 .promo-row {

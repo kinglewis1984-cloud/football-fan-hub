@@ -85,8 +85,14 @@ export default function App() {
   return (
     <div className="app-root">
       <header className="site-header">
-        <h1>FOOTBALL FAN HUB</h1>
-        <p className="tagline">Scores, tables, and news — all in one place</p>
+        <div className="site-header-main">
+          <h1>FOOTBALL FAN CLUBZ</h1>
+          <p className="tagline">Scores, tables, and news — all in one place</p>
+        </div>
+        <p className="mission">
+          Made a site so I stop refreshing 5 different apps every matchday. Fixtures + table +
+          news + chat, all in one spot. Arsenal fans, this one's for you 😅
+        </p>
       </header>
 
       <div className="promo-row">
