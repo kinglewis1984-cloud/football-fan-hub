@@ -97,7 +97,8 @@ export default function App() {
         </div>
         <p className="mission">
           Made a site so I stop refreshing 5 different apps every matchday. Fixtures + table +
-          news + chat, all in one spot. Arsenal fans, this one's for you 😅
+          news + a working community chat that real fans can jump into, all in one spot. Arsenal
+          fans, this one's for you 😅
         </p>
       </header>
 
