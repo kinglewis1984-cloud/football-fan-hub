@@ -18,16 +18,22 @@ function timeAgo(iso) {
 function AuthPanel({ session, profile, onProfileUpdated }) {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
+  const [authError, setAuthError] = useState('')
   const [usernameInput, setUsernameInput] = useState('')
   const [usernameError, setUsernameError] = useState('')
 
   async function sendMagicLink(e) {
     e.preventDefault()
+    setAuthError('')
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: window.location.origin },
     })
-    if (!error) setSent(true)
+    if (error) {
+      setAuthError(error.message)
+      return
+    }
+    setSent(true)
   }
 
   async function saveUsername(e) {
@@ -61,6 +67,7 @@ function AuthPanel({ session, profile, onProfileUpdated }) {
               onChange={(e) => setEmail(e.target.value)}
             />
             <button type="submit">Sign in to chat</button>
+            {authError && <p className="hint-text error">{authError}</p>}
           </>
         )}
       </form>
@@ -93,6 +100,61 @@ function AuthPanel({ session, profile, onProfileUpdated }) {
   )
 }
 
+function AdminReports({ onClose }) {
+  const [reports, setReports] = useState(null)
+
+  function load() {
+    supabase
+      .from('reports')
+      .select('id, reason, created_at, message_id, messages(content, room)')
+      .order('created_at', { ascending: false })
+      .then(({ data }) => setReports(data || []))
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
+
+  async function deleteMessage(report) {
+    if (!window.confirm('Delete this message? This cannot be undone.')) return
+    await supabase.from('messages').delete().eq('id', report.message_id)
+    await supabase.from('reports').delete().eq('id', report.id)
+    load()
+  }
+
+  async function dismiss(report) {
+    await supabase.from('reports').delete().eq('id', report.id)
+    load()
+  }
+
+  return (
+    <div className="admin-panel">
+      <div className="admin-header">
+        <h3>Reported Messages</h3>
+        <button onClick={onClose}>Close</button>
+      </div>
+      {reports === null && <p className="hint-text">Loading reports…</p>}
+      {reports && reports.length === 0 && <p className="hint-text">No open reports.</p>}
+      {reports && reports.map((r) => (
+        <div className="admin-report" key={r.id}>
+          <div className="message-head">
+            <strong>#{r.messages?.room || 'unknown'}</strong>
+            <span className="message-time">{timeAgo(r.created_at)}</span>
+          </div>
+          <p className="admin-message-content">
+            {r.messages?.content || '(message already deleted)'}
+          </p>
+          <p className="admin-reason">Reason: {r.reason}</p>
+          <div className="message-actions">
+            <button onClick={() => deleteMessage(r)}>Delete message</button>
+            <button onClick={() => dismiss(r)}>Dismiss report</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function Community({ teams }) {
   const [session, setSession] = useState(null)
   const [profile, setProfile] = useState(null)
@@ -101,6 +163,7 @@ export default function Community({ teams }) {
   const [messages, setMessages] = useState([])
   const [profileCache, setProfileCache] = useState({})
   const [draft, setDraft] = useState('')
+  const [showAdmin, setShowAdmin] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
@@ -118,7 +181,7 @@ export default function Community({ teams }) {
     }
     supabase
       .from('profiles')
-      .select('id, username')
+      .select('id, username, is_admin')
       .eq('id', session.user.id)
       .single()
       .then(({ data }) => setProfile(data))
@@ -209,9 +272,19 @@ export default function Community({ teams }) {
 
   return (
     <section className="panel community-panel">
-      <h2>Fan Community</h2>
+      <div className="community-title-row">
+        <h2>Fan Community</h2>
+        {profile?.is_admin && !showAdmin && (
+          <button className="admin-toggle" onClick={() => setShowAdmin(true)}>
+            View Reports
+          </button>
+        )}
+      </div>
       <AuthPanel session={session} profile={profile} onProfileUpdated={setProfile} />
 
+      {showAdmin ? (
+        <AdminReports onClose={() => setShowAdmin(false)} />
+      ) : (
       <div className="community-body">
         <div className="room-list">
           {teams.map((team) => {
@@ -271,6 +344,7 @@ export default function Community({ teams }) {
           )}
         </div>
       </div>
+      )}
     </section>
   )
 }

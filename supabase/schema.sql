@@ -113,3 +113,23 @@ drop policy if exists "Users can remove from their own block list" on public.blo
 create policy "Users can remove from their own block list"
   on public.blocks for delete
   using (auth.uid() = blocker_id);
+
+-- Admin: one flag on profiles, granted only to the site owner's account below.
+alter table public.profiles add column if not exists is_admin boolean not null default false;
+
+update public.profiles set is_admin = true where id = 'ea423c87-d673-43de-8ea5-e226bcb57d24';
+
+drop policy if exists "Admins can view all reports" on public.reports;
+create policy "Admins can view all reports"
+  on public.reports for select
+  using (exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin));
+
+drop policy if exists "Admins can delete reports" on public.reports;
+create policy "Admins can delete reports"
+  on public.reports for delete
+  using (exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin));
+
+drop policy if exists "Admins can delete messages" on public.messages;
+create policy "Admins can delete messages"
+  on public.messages for delete
+  using (exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin));

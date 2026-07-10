@@ -271,6 +271,73 @@ body {
   grid-column: 1 / -1;
 }
 
+.community-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.community-title-row h2 {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.admin-toggle {
+  background: #7a2020;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.admin-toggle:hover {
+  background: #9c2828;
+}
+
+.admin-panel {
+  padding-top: 10px;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.admin-header button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.admin-report {
+  background: #0d1410;
+  border: 1px solid #5c2020;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.admin-message-content {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #fff;
+}
+
+.admin-reason {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #d88;
+  font-style: italic;
+}
+
 .auth-panel {
   display: flex;
   align-items: center;
