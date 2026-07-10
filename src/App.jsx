@@ -67,6 +67,7 @@ function StandingsTable({ standings }) {
 export default function App() {
   const [news, setNews] = useState({ loading: true, items: [], error: null })
   const [scores, setScores] = useState({ loading: true, matches: [], standings: [] })
+  const [live, setLive] = useState({ loading: true, live: false, videoId: null })
 
   useEffect(() => {
     fetch('/api/news')
@@ -80,6 +81,11 @@ export default function App() {
         setScores({ loading: false, matches: data.matches || [], standings: data.standings || [] })
       )
       .catch(() => setScores({ loading: false, matches: [], standings: [] }))
+
+    fetch('/api/live-status')
+      .then((r) => r.json())
+      .then((data) => setLive({ loading: false, live: data.live, videoId: data.videoId || null }))
+      .catch(() => setLive({ loading: false, live: false, videoId: null }))
   }, [])
 
   return (
@@ -125,6 +131,20 @@ export default function App() {
           </div>
         </a>
       </div>
+
+      {live.live && (
+        <div className="live-now">
+          <p className="live-badge">🔴 LIVE NOW — HnLkicinit</p>
+          <div className="live-embed-wrap">
+            <iframe
+              src={`https://www.youtube.com/embed/${live.videoId}?autoplay=1`}
+              title="HnLkicinit live stream"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
 
       <main className="layout">
         <section className="panel matches-panel">
