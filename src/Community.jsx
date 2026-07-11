@@ -15,6 +15,20 @@ function timeAgo(iso) {
   return `${Math.floor(hours / 24)}d ago`
 }
 
+const URL_PATTERN = /(https?:\/\/[^\s]+)/g
+
+function linkify(text) {
+  return text.split(URL_PATTERN).map((part, i) =>
+    part.startsWith('http://') || part.startsWith('https://') ? (
+      <a key={i} href={part} target="_blank" rel="noreferrer noopener" className="message-link">
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  )
+}
+
 function AuthPanel({ session, profile, onProfileUpdated }) {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
@@ -315,7 +329,7 @@ export default function Community({ teams }) {
                       <strong>{profileCache[m.user_id] || 'Fan'}</strong>
                       <span className="message-time">{timeAgo(m.created_at)}</span>
                     </div>
-                    <p>{m.content}</p>
+                    <p>{linkify(m.content)}</p>
                     {session && (
                       <div className="message-actions">
                         <button onClick={() => reportMessage(m)}>Report</button>

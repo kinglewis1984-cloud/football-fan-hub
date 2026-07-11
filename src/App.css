@@ -493,6 +493,16 @@ body {
 .message p {
   margin: 0;
   font-size: 14px;
+  overflow-wrap: break-word;
+}
+
+.message-link {
+  color: #7fd99a;
+  text-decoration: underline;
+}
+
+.message-link:hover {
+  color: #a8e6bb;
 }
 
 .message-actions {
