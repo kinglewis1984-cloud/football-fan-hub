@@ -185,6 +185,12 @@ export default function App() {
       </main>
 
       <footer className="site-footer">
+        <p>
+          Join our Telegram:{' '}
+          <a href="https://t.me/HnLkicinit" target="_blank" rel="noreferrer">
+            t.me/HnLkicinit
+          </a>
+        </p>
         <p>Contact: <a href="mailto:hsnnlewkickit@gmail.com">hsnnlewkickit@gmail.com</a></p>
       </footer>
     </div>
