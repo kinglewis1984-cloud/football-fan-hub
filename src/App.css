@@ -191,6 +191,34 @@ body {
   grid-column: 1 / -1;
 }
 
+.game-panel {
+  grid-column: 1 / -1;
+}
+
+.game-embed-wrap {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #234b32;
+  margin-top: 10px;
+}
+
+.game-embed-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 700px) {
+  .game-embed-wrap {
+    height: 420px;
+  }
+}
+
 .matches-panel {
   max-height: 420px;
   overflow-y: auto;

@@ -148,6 +148,24 @@ export default function App() {
       )}
 
       <main className="layout">
+        <section className="panel game-panel">
+          <h2>🎮 Shadow Takedown — Play Now</h2>
+          <p className="hint-text">
+            A stealth game I built — 20 levels, kill-cams, weapon unlocks.{' '}
+            <a href="https://shadow-takedown.vercel.app" target="_blank" rel="noreferrer">
+              Play fullscreen ↗
+            </a>
+          </p>
+          <div className="game-embed-wrap">
+            <iframe
+              src="https://shadow-takedown.vercel.app"
+              title="Shadow Takedown"
+              allow="fullscreen; gamepad"
+              allowFullScreen
+            />
+          </div>
+        </section>
+
         <section className="panel matches-panel">
           <h2>Premier League Matches</h2>
           {scores.loading && <p className="hint-text">Loading matches…</p>}
