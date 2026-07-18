@@ -131,6 +131,20 @@ export default function App() {
             <p>Arsenal takes &amp; updates — give it a follow</p>
           </div>
         </a>
+
+        <a
+          className="promo-banner"
+          href="https://x.com/lglondoncrypto1"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src="/lglondoncrypto-logo.png" alt="LG London Crypto logo" />
+          <div>
+            <span className="promo-label">Sponsored by</span>
+            <h3>LG London Crypto</h3>
+            <p>Follow on X</p>
+          </div>
+        </a>
       </div>
 
       {live.live && (
@@ -148,24 +162,6 @@ export default function App() {
       )}
 
       <main className="layout">
-        <section className="panel game-panel">
-          <h2>🎮 Shadow Takedown — Play Now</h2>
-          <p className="hint-text">
-            A stealth game I built — 20 levels, kill-cams, weapon unlocks.{' '}
-            <a href="https://shadow-takedown.vercel.app" target="_blank" rel="noreferrer">
-              Play fullscreen ↗
-            </a>
-          </p>
-          <div className="game-embed-wrap">
-            <iframe
-              src="https://shadow-takedown.vercel.app"
-              title="Shadow Takedown"
-              allow="fullscreen; gamepad"
-              allowFullScreen
-            />
-          </div>
-        </section>
-
         <section className="panel matches-panel">
           <h2>Premier League Matches</h2>
           {scores.loading && <p className="hint-text">Loading matches…</p>}
@@ -199,6 +195,24 @@ export default function App() {
               <p>{stripHtml(item.description)}</p>
             </a>
           ))}
+        </section>
+
+        <section className="panel game-panel">
+          <h2>🎮 Shadow Takedown — Play Now</h2>
+          <p className="hint-text">
+            A stealth game I built — 20 levels, kill-cams, weapon unlocks.{' '}
+            <a href="https://shadow-takedown.vercel.app" target="_blank" rel="noreferrer">
+              Play fullscreen ↗
+            </a>
+          </p>
+          <div className="game-embed-wrap">
+            <iframe
+              src="https://shadow-takedown.vercel.app"
+              title="Shadow Takedown"
+              allow="fullscreen; gamepad"
+              allowFullScreen
+            />
+          </div>
         </section>
       </main>
 
