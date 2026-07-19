@@ -131,20 +131,6 @@ export default function App() {
             <p>Arsenal takes &amp; updates — give it a follow</p>
           </div>
         </a>
-
-        <a
-          className="promo-banner"
-          href="https://x.com/lglondoncrypto1"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img src="/lglondoncrypto-logo.png" alt="LG London Crypto logo" />
-          <div>
-            <span className="promo-label">Sponsored by</span>
-            <h3>LG London Crypto</h3>
-            <p>Follow on X</p>
-          </div>
-        </a>
       </div>
 
       {live.live && (
@@ -214,6 +200,22 @@ export default function App() {
             />
           </div>
         </section>
+
+        <div className="sponsor-row">
+          <a
+            className="sponsor-banner"
+            href="https://www.youtube.com/@lg.londoncrypto9496"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src="/lglondoncrypto-logo.png" alt="LG London Crypto logo" />
+            <div>
+              <span className="promo-label">Sponsored by</span>
+              <h3>LG London Crypto</h3>
+              <p>Watch on YouTube</p>
+            </div>
+          </a>
+        </div>
       </main>
 
       <footer className="site-footer">
