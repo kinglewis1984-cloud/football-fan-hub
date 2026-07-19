@@ -215,6 +215,20 @@ export default function App() {
               <p>Watch on YouTube</p>
             </div>
           </a>
+
+          <a
+            className="sponsor-banner"
+            href="https://cardvault-sigma.vercel.app"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src="/cardvault-logo.svg" alt="Card Vault logo" />
+            <div>
+              <span className="promo-label">Sponsored by</span>
+              <h3>Card Vault</h3>
+              <p>Track your Pokemon &amp; football card collection</p>
+            </div>
+          </a>
         </div>
       </main>
 
