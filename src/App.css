@@ -323,6 +323,16 @@ body {
   border-bottom: none;
 }
 
+.news-source {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #7fd99a;
+  margin-bottom: 4px;
+}
+
 .news-item h3 {
   margin: 0 0 4px;
   font-size: 15px;

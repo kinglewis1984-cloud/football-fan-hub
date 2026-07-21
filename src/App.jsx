@@ -177,6 +177,7 @@ export default function App() {
           {news.error && <p className="hint-text">{news.error}</p>}
           {news.items.map((item) => (
             <a className="news-item" key={item.link} href={item.link} target="_blank" rel="noreferrer">
+              <span className="news-source">{item.source}</span>
               <h3>{item.title}</h3>
               <p>{stripHtml(item.description)}</p>
             </a>
