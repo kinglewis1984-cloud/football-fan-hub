@@ -7,6 +7,16 @@ const FEEDS = [
 
 const parser = new XMLParser()
 
+// Date.parse doesn't understand the "BST" abbreviation Sky Sports uses (only
+// GMT/UTC are reliably recognised), so it silently returns Invalid Date and
+// those items sink to the bottom of the sort.
+function parsePubDate(str) {
+  if (!str) return 0
+  const fixed = str.replace(/\bBST\b/, '+0100').replace(/\bGMT\b/, '+0000')
+  const time = new Date(fixed).getTime()
+  return Number.isNaN(time) ? 0 : time
+}
+
 async function fetchFeed({ source, url }) {
   const response = await fetch(url)
   const xml = await response.text()
@@ -28,20 +38,15 @@ export default async function handler(req, res) {
     const items = results
       .filter((r) => r.status === 'fulfilled')
       .flatMap((r) => r.value)
-      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
+      .sort((a, b) => parsePubDate(b.pubDate) - parsePubDate(a.pubDate))
       .slice(0, 30)
 
     if (items.length === 0) {
       throw new Error('All news feeds failed')
     }
 
-    const failed = results
-      .map((r, i) => ({ r, source: FEEDS[i].source }))
-      .filter(({ r }) => r.status === 'rejected')
-      .map(({ r, source }) => ({ source, error: String(r.reason) }))
-
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600')
-    res.status(200).json({ items, ...(failed.length ? { _debugFailed: failed } : {}) })
+    res.status(200).json({ items })
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch news feed' })
   }
