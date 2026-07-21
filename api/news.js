@@ -35,8 +35,13 @@ export default async function handler(req, res) {
       throw new Error('All news feeds failed')
     }
 
+    const failed = results
+      .map((r, i) => ({ r, source: FEEDS[i].source }))
+      .filter(({ r }) => r.status === 'rejected')
+      .map(({ r, source }) => ({ source, error: String(r.reason) }))
+
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600')
-    res.status(200).json({ items })
+    res.status(200).json({ items, ...(failed.length ? { _debugFailed: failed } : {}) })
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch news feed' })
   }
