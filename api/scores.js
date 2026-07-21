@@ -55,7 +55,6 @@ export default async function handler(req, res) {
     const entries = standingsData.children?.[0]?.standings?.entries || []
     const standings = entries
       .map((entry) => ({
-        position: statValue(entry.stats, 'rank'),
         team: entry.team.shortDisplayName || entry.team.displayName,
         played: statValue(entry.stats, 'gamesPlayed'),
         won: statValue(entry.stats, 'wins'),
@@ -64,7 +63,10 @@ export default async function handler(req, res) {
         points: statValue(entry.stats, 'points'),
         goalDifference: statValue(entry.stats, 'pointDifferential'),
       }))
-      .sort((a, b) => a.position - b.position)
+      // Alphabetical for now — before the season has real results, ESPN's rank
+      // is just an arbitrary tie-break and reads as a fake league position.
+      .sort((a, b) => a.team.localeCompare(b.team))
+      .map((row, index) => ({ ...row, position: index + 1 }))
 
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120')
     res.status(200).json({ configured: true, matches, standings })
