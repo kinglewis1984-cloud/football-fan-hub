@@ -230,6 +230,20 @@ export default function App() {
               <p>Track your Pokemon &amp; football card collection</p>
             </div>
           </a>
+
+          <a
+            className="sponsor-banner"
+            href="https://linktr.ee/depsoul9"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src="/depsoul9-logo.jpg" alt="DepSoul9 logo" />
+            <div>
+              <span className="promo-label">Sponsored by</span>
+              <h3>DepSoul9</h3>
+              <p>Follow the links</p>
+            </div>
+          </a>
         </div>
       </main>
 
