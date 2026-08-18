@@ -70,7 +70,7 @@ function AuthPanel({ session, profile, onProfileUpdated }) {
     return (
       <form className="auth-panel" onSubmit={sendMagicLink}>
         {sent ? (
-          <p className="hint-text">Check your email for a sign-in link.</p>
+          <p className="hint-text">Check your email/spam for a sign-in link.</p>
         ) : (
           <>
             <input
