@@ -32,6 +32,12 @@ function MatchRow({ match }) {
 }
 
 function StandingsTable({ standings }) {
+  const sorted = [...standings].sort((a, b) => {
+    const aPlayed = a.played > 0 ? 0 : 1
+    const bPlayed = b.played > 0 ? 0 : 1
+    return aPlayed - bPlayed
+  })
+
   return (
     <table className="standings-table">
       <thead>
@@ -47,9 +53,9 @@ function StandingsTable({ standings }) {
         </tr>
       </thead>
       <tbody>
-        {standings.map((row) => (
+        {sorted.map((row, i) => (
           <tr key={row.team}>
-            <td>{row.position}</td>
+            <td>{i + 1}</td>
             <td className="team-name">{row.team}</td>
             <td>{row.played}</td>
             <td>{row.won}</td>
