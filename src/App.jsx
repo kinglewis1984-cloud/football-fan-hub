@@ -32,11 +32,12 @@ function MatchRow({ match }) {
 }
 
 function StandingsTable({ standings }) {
-  const sorted = [...standings].sort((a, b) => {
-    const aPlayed = a.played > 0 ? 0 : 1
-    const bPlayed = b.played > 0 ? 0 : 1
-    return aPlayed - bPlayed
-  })
+  const tier = (row) => {
+    if (row.points > 0) return 0
+    if (row.played > 0) return 1
+    return 2
+  }
+  const sorted = [...standings].sort((a, b) => tier(a) - tier(b))
 
   return (
     <table className="standings-table">
