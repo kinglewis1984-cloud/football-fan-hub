@@ -181,9 +181,7 @@ export default function App() {
           )}
         </section>
 
-        {scores.standings.length > 0 && (
-          <Community teams={scores.standings.map((row) => row.team)} />
-        )}
+        <Community teams={scores.standings.map((row) => row.team)} />
 
         <section className="panel news-panel">
           <h2>Latest News</h2>

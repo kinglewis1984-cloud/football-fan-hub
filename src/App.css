@@ -220,8 +220,23 @@ body {
 }
 
 .matches-panel {
+  min-height: 420px;
   max-height: 420px;
   overflow-y: auto;
+}
+
+.table-panel {
+  min-height: 700px;
+}
+
+.news-panel {
+  min-height: 420px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.community-panel {
+  min-height: 260px;
 }
 
 .panel {
