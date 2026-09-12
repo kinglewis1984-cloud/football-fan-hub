@@ -82,17 +82,24 @@ export default function App() {
       .then((data) => setNews({ loading: false, items: data.items || [], error: data.error || null }))
       .catch(() => setNews({ loading: false, items: [], error: 'Could not load news' }))
 
-    fetch('/api/scores')
-      .then((r) => r.json())
-      .then((data) =>
-        setScores({ loading: false, matches: data.matches || [], standings: data.standings || [] })
-      )
-      .catch(() => setScores({ loading: false, matches: [], standings: [] }))
-
     fetch('/api/live-status')
       .then((r) => r.json())
       .then((data) => setLive({ loading: false, live: data.live, videoId: data.videoId || null }))
       .catch(() => setLive({ loading: false, live: false, videoId: null }))
+
+    const loadScores = () =>
+      fetch('/api/scores')
+        .then((r) => r.json())
+        .then((data) =>
+          setScores({ loading: false, matches: data.matches || [], standings: data.standings || [] })
+        )
+        .catch(() => setScores((prev) => ({ ...prev, loading: false })))
+
+    loadScores()
+    // Matches the /api/scores response's own s-maxage=60 cache window, so this
+    // never asks the upstream ESPN API for anything fresher than it can give.
+    const id = setInterval(loadScores, 60000)
+    return () => clearInterval(id)
   }, [])
 
   return (
