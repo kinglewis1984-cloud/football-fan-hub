@@ -63,9 +63,9 @@ export default async function handler(req, res) {
         points: statValue(entry.stats, 'points'),
         goalDifference: statValue(entry.stats, 'pointDifferential'),
       }))
-      // Alphabetical for now — before the season has real results, ESPN's rank
-      // is just an arbitrary tie-break and reads as a fake league position.
-      .sort((a, b) => a.team.localeCompare(b.team))
+      .sort(
+        (a, b) => b.points - a.points || b.goalDifference - a.goalDifference || a.team.localeCompare(b.team)
+      )
       .map((row, index) => ({ ...row, position: index + 1 }))
 
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120')

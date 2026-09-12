@@ -32,13 +32,6 @@ function MatchRow({ match }) {
 }
 
 function StandingsTable({ standings }) {
-  const tier = (row) => {
-    if (row.points > 0) return 0
-    if (row.played > 0) return 1
-    return 2
-  }
-  const sorted = [...standings].sort((a, b) => tier(a) - tier(b))
-
   return (
     <table className="standings-table">
       <thead>
@@ -54,9 +47,9 @@ function StandingsTable({ standings }) {
         </tr>
       </thead>
       <tbody>
-        {sorted.map((row, i) => (
+        {standings.map((row) => (
           <tr key={row.team}>
-            <td>{i + 1}</td>
+            <td>{row.position}</td>
             <td className="team-name">{row.team}</td>
             <td>{row.played}</td>
             <td>{row.won}</td>
